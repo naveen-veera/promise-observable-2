@@ -1,31 +1,30 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AppComponent } from './app.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule,FormsModule], 
       declarations: [
         AppComponent
       ],
     }).compileComponents();
+    let http : HttpClient;
+    component = new AppComponent(http);
   });
 
-  it('should create the app', () => {
+  it('test_case1',()=>{
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+    app.ngOnInit();
+    app.country="Australia"
+    app.onChangeCountry();
+    expect(app.listCountry[0].name).toBe("Australia");
 
-  it(`should have as title 'Promise-Observable'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('Promise-Observable');
-  });
+});
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('Promise-Observable app is running!');
-  });
 });
