@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'Promise-Observable';
+  result: any;
   constructor(private http: HttpClient) {}
 
   listCountry: any = [];
@@ -18,6 +19,8 @@ export class AppComponent implements OnInit {
   country: any;
   city: string;
   formdata: any;
+
+  status : any;
 
   ngOnInit(): void {
     let promise = new Promise((resolve, reject) => {
@@ -50,6 +53,25 @@ export class AppComponent implements OnInit {
     this.gender = data.gender;
     this.country = data.country;
     this.city = data.city;
-    console.log(data);
+    
+    let promise = new Promise((resolve, reject) => {
+      let apiURL = `https://api.mocki.io/v1/50b6e912/user/`;
+      this.http
+        .post(apiURL,data)
+        .toPromise()
+        .then(res => {
+          resolve(res);
+        }).catch(err => {
+          reject("Error while saving data");
+        });
+    });
+    
+    promise.then( res => {
+      console.log(res)
+      this.result = res;
+    }).catch(err => {
+      this.result = err;
+      console.log(err)
+    })
   }
 }
